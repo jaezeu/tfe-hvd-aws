@@ -1,9 +1,3 @@
-variable "region" {
-  type        = string
-  description = "AWS region to deploy TFE into."
-  default     = "ap-southeast-1"
-}
-
 variable "tags" {
   type        = map(string)
   description = "Additional tags to apply to all AWS resources."
@@ -13,7 +7,6 @@ variable "tags" {
 variable "friendly_name_prefix" {
   type        = string
   description = "Friendly name prefix used for uniquely naming all AWS resources for this deployment."
-  default     = "tfe"
 }
 
 variable "tfe_fqdn" {
@@ -90,4 +83,9 @@ variable "tfe_tls_ca_bundle_secret_arn" {
     condition     = can(regex("^arn:aws:secretsmanager:", var.tfe_tls_ca_bundle_secret_arn))
     error_message = "Must be a valid AWS Secrets Manager ARN."
   }
+}
+
+variable "route53_tfe_hosted_zone_name" {
+  type        = string
+  description = "The name of the Route 53 hosted zone to create the TFE DNS record in (e.g. example.com)."
 }

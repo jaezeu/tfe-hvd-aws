@@ -6,13 +6,19 @@ module "tfe_hvd" {
   friendly_name_prefix = var.friendly_name_prefix
 
   # Networking
-  vpc_id         = module.tfe_vpc.vpc_id
-  ec2_subnet_ids = module.tfe_vpc.private_subnets
-  lb_subnet_ids  = module.tfe_vpc.public_subnets
-  rds_subnet_ids = module.tfe_vpc.database_subnets
+  lb_type          = "nlb"
+  lb_is_internal   = false
+  vpc_id           = module.tfe_vpc.vpc_id
+  ec2_subnet_ids   = module.tfe_vpc.private_subnets
+  lb_subnet_ids    = module.tfe_vpc.public_subnets
+  rds_subnet_ids   = module.tfe_vpc.database_subnets
+  redis_subnet_ids = module.tfe_vpc.database_subnets
 
   # DNS
-  tfe_fqdn = var.tfe_fqdn
+  create_route53_tfe_dns_record      = true
+  route53_tfe_hosted_zone_is_private = false
+  tfe_fqdn                           = var.tfe_fqdn
+  route53_tfe_hosted_zone_name       = var.route53_tfe_hosted_zone_name
 
   # Secrets Manager ARNs
   tfe_license_secret_arn             = var.tfe_license_secret_arn
